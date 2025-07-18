@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runtime Usage - LF Attribute Forge</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="quick-start.html">Quick Start</a></li>
+      <li><a href="wizard-guide.html">Wizard Guide</a></li>
+      <li><a href="runtime-usage.html" class="active">Runtime Usage</a></li>
+      <li><a href="ui-binding.html">UI Binding</a></li>
+      <li><a href="import-export.html">Import/Export</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="api-reference.html">API Reference</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / Runtime Usage
+  </div>
+
+  <div class="section">
+    <h1>🎮 Runtime Usage Guide</h1>
+    <p>Practical examples and performance patterns for using generated attribute systems in your game.</p>
+  </div>
+
+  <div class="section">
+    <h2>⚠️ Critical: ModifyValue vs SetValue</h2>
+
+    <div class="warning">
+      <strong>Understanding the difference is crucial for regeneration!</strong>
+    </div>
+
+    <h3>🎮 ModifyValue() - For Gameplay</h3>
+    <div class="code-block">
+      // USE FOR: Damage, healing, consumption, gameplay changes
+      // RESULT: Fires regeneration events, triggers coroutines
+
+      attributes.health.ModifyValue(-25f); // Damage - will start regen
+      attributes.mana.ModifyValue(-10f); // Spell cost - will start regen
+      attributes.health.ModifyValue(15f); // Healing potion
+    </div>
+
+    <h3>🔧 SetValue() - For Admin/Loading</h3>
+    <div class="code-block">
+      // USE FOR: Initialization, loading saves, admin commands
+      // RESULT: No regeneration events fired
+
+      attributes.health.SetValue(100f); // Set to full health
+      attributes.level.SetValue(50f); // Load save data
+      attributes.health.SetValue(1f); // Debug/testing
+    </div>
+
+    <div class="success">
+      <strong>💡 Key Rule:</strong>
+      Use ModifyValue() for gameplay changes that should trigger regeneration. Use SetValue() for administrative changes
+      that shouldn't.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔄 Automatic Regeneration System</h2>
+    <p>The new system uses coroutines and events - no manual Update() calls needed.</p>
+
+    <h3>How Regeneration Works</h3>
+    <div class="code-block">
+      // 1. Damage occurs
+      attributes.health.ModifyValue(-50f);
+
+      // 2. Regeneration automatically starts (if canRegenerate = true)
+      // 3. Coroutine waits for regenerationDelay
+      // 4. Coroutine calls RegenerateStep() each frame until full
+      // 5. Regeneration stops when max reached
+
+      // NO MANUAL CALLS NEEDED - IT'S AUTOMATIC!
+    </div>
+
+    <h3>Regeneration Configuration</h3>
+    <div class="code-block">
+      // Set in inspector or via code
+      attributes.health.canRegenerate = true;
+      attributes.health.regenerationRate = 2.5f; // 2.5 HP per second
+      attributes.health.regenerationDelay = 3f; // 3 second delay after damage
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Important:</strong>
+      The system is fully automatic. Do NOT call Update() methods manually - they don't exist in the new system.
+    </div>
+    <div class="warning">
+      <strong>⚠️ Regeneration Flow:</strong>
+      LFRuntimeAttribute fires events (OnShouldStartRegeneration) → Generated container manages coroutines → Coroutine
+      calls
+      RegenerateStep() each frame.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚡ Performance-Optimized Access Patterns</h2>
+
+    <h3>🚀 Direct Field Access (Fastest)</h3>
+    <div class="code-block">
+      public class PlayerController : MonoBehaviour
+      {
+      private CharacterAttributes attributes;
+      private LFRuntimeAttribute health;
+      private LFRuntimeAttribute mana;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Cache references for performance
+      health = attributes.health;
+      mana = attributes.mana;
+      }
+
+      public void TakeDamage(float damage)
+      {
+      // Direct access - fastest method
+      health.ModifyValue(-damage);
+
+      Debug.Log($"Health: {health.GetCurrentValue()}/{health.GetMaxValue()}");
+      }
+      }
+    </div>
+
+    <h3>⚡ Enum-Based Access (Fast)</h3>
+    <div class="code-block">
+      public class AttributeManager : MonoBehaviour
+      {
+      private CharacterAttributes attributes;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+      }
+
+      public void ModifyAttributeByEnum(CharacterAttributeEnum attributeType, float amount)
+      {
+      var attribute = attributes.GetAttributeByEnum(attributeType);
+      if (attribute != null)
+      {
+      attribute.ModifyValue(amount);
+      }
+      }
+      }
+    </div>
+
+    <h3>🐌 String-Based Access (Safest but Slowest)</h3>
+    <div class="code-block">
+      public class FlexibleAttributeModifier : MonoBehaviour
+      {
+      private CharacterAttributes attributes;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+      }
+
+      public bool TryModifyAttribute(string name, float amount)
+      {
+      var attribute = attributes.GetAttribute(name);
+      if (attribute != null)
+      {
+      attribute.ModifyValue(amount);
+      return true;
+      }
+      Debug.LogWarning($"Attribute '{name}' not found!");
+      return false;
+      }
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎯 Event-Driven UI Updates</h2>
+
+    <h3>Optimized Event Management</h3>
+    <div class="code-block">
+      public class PlayerUIManager : MonoBehaviour
+      {
+      [Header("Components")]
+      public CharacterAttributes attributes;
+      public CharacterUIBinding uiBinding;
+
+      [Header("Performance Settings")]
+      public float uiUpdateInterval = 0.1f; // Limit UI update frequency
+
+      private LFRuntimeAttribute health;
+      private float lastUIUpdate;
+      private bool needsUIUpdate;
+
+      void Start()
+      {
+      // Cache attribute reference for performance
+      health = attributes.health;
+
+      // Subscribe to specific events
+      health.OnValueChanged += OnHealthChanged;
+      health.OnReachedZero += OnPlayerDeath;
+      health.OnRegenerationStateChanged += OnHealthRegenChanged;
+
+      // Initial UI setup
+      uiBinding.UpdateAllUI(attributes);
+      }
+
+      void OnHealthChanged()
+      {
+      // Mark for UI update instead of updating immediately
+      needsUIUpdate = true;
+      }
+
+      void Update()
+      {
+      // Rate-limited UI updates for performance
+      if (needsUIUpdate && Time.time - lastUIUpdate > uiUpdateInterval)
+      {
+      // Use targeted update for better performance
+      uiBinding.UpdateVitalAttributesUI(attributes);
+      needsUIUpdate = false;
+      lastUIUpdate = Time.time;
+      }
+      }
+
+      void OnHealthRegenChanged(bool isRegenerating)
+      {
+      // Visual feedback for regeneration
+      Debug.Log($"Health regeneration: {(isRegenerating ? "Started" : "Stopped")}");
+      }
+
+      void OnPlayerDeath()
+      {
+      Debug.Log("Player has died!");
+      }
+
+      void OnDestroy()
+      {
+      // Clean up event subscriptions
+      if (health != null)
+      {
+      health.OnValueChanged -= OnHealthChanged;
+      health.OnReachedZero -= OnPlayerDeath;
+      health.OnRegenerationStateChanged -= OnHealthRegenChanged;
+      }
+      }
+      }
+    </div>
+
+    <div class="success">
+      <strong>💡 Event System Benefits:</strong>
+      <ul>
+        <li>UI updates only when values actually change</li>
+        <li>No polling in Update() loops</li>
+        <li>Automatic regeneration feedback</li>
+        <li>Better performance with rate limiting</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔧 Common Patterns</h2>
+
+    <h3>Damage System with Armor</h3>
+    <div class="code-block">
+      public class CombatSystem : MonoBehaviour
+      {
+      private CharacterAttributes attributes;
+      private LFRuntimeAttribute health;
+      private LFRuntimeAttribute armor;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Cache references for performance
+      health = attributes.health;
+      armor = attributes.armor;
+      }
+
+      public void TakeDamage(float rawDamage)
+      {
+      // Calculate damage reduction from armor
+      float armorValue = armor.GetCurrentValue();
+      float damageReduction = armorValue / (armorValue + 100f);
+      float finalDamage = rawDamage * (1f - damageReduction);
+
+      // Apply damage - triggers regeneration automatically
+      health.ModifyValue(-finalDamage);
+
+      Debug.Log($"Took {finalDamage:F1} damage");
+
+      if (health.IsAtMin())
+      {
+      HandleDeath();
+      }
+      }
+
+      void HandleDeath()
+      {
+      Debug.Log("Character died!");
+      // Handle death logic
+      }
+      }
+    </div>
+
+    <h3>Consumable Items</h3>
+    <div class="code-block">
+      public class HealthPotion : MonoBehaviour
+      {
+      [Header("Potion Settings")]
+      public float healAmount = 50f;
+      public float cooldown = 2f;
+
+      private CharacterAttributes attributes;
+      private float lastUsed;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+      }
+
+      public bool TryUsePotion()
+      {
+      if (Time.time - lastUsed < cooldown) { Debug.Log("Potion on cooldown!"); return false; } if
+        (attributes.health.IsAtMax()) { Debug.Log("Health already full!"); return false; } // Use ModifyValue for
+        healing - allows regeneration to continue attributes.health.ModifyValue(healAmount); lastUsed=Time.time;
+        Debug.Log($"Used health potion! Health: {attributes.health.GetCurrentValue()}"); return true; } } </div>
+
+        <h3>Save/Load System</h3>
+        <div class="code-block">
+          [System.Serializable]
+          public class AttributeSaveData
+          {
+          public float health;
+          public float mana;
+          public float stamina;
+          public int level;
+          }
+
+          public class SaveSystem : MonoBehaviour
+          {
+          private CharacterAttributes attributes;
+
+          void Start()
+          {
+          attributes = GetComponent&lt;CharacterAttributes&gt;();
+          }
+
+          public AttributeSaveData CreateSaveData()
+          {
+          return new AttributeSaveData
+          {
+          health = attributes.health.GetCurrentValue(),
+          mana = attributes.mana.GetCurrentValue(),
+          stamina = attributes.stamina.GetCurrentValue(),
+          level = attributes.level.GetIntValue()
+          };
+          }
+
+          public void LoadSaveData(AttributeSaveData data)
+          {
+          // Use SetValue for loading - no regeneration events
+          attributes.health.SetValue(data.health);
+          attributes.mana.SetValue(data.mana);
+          attributes.stamina.SetValue(data.stamina);
+          attributes.level.SetValue(data.level);
+
+          Debug.Log("Save data loaded successfully!");
+          }
+          }
+        </div>
+    </div>
+
+    <div class="section">
+      <h2>⚡ Performance Guidelines</h2>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>🚀 Best Performance</h4>
+          <ul>
+            <li>Direct field access: <code>attributes.health</code></li>
+            <li>Cached references in Start()</li>
+            <li>Event-driven updates only</li>
+            <li>Rate-limited UI updates</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h4>⚡ Good Performance</h4>
+          <ul>
+            <li>Enum-based access: <code>GetAttributeByEnum()</code></li>
+            <li>Cached collection access</li>
+            <li>Batch UI operations</li>
+            <li>Use IsDirty flag for optimization</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h4>⚠️ Avoid in Update()</h4>
+          <ul>
+            <li>String-based lookups every frame</li>
+            <li>UpdateAllUI() without rate limiting</li>
+            <li>Creating temporary strings</li>
+            <li>Allocating new objects</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="success">
+        <strong>💡 Key Performance Rules:</strong>
+        <ul>
+          <li>Cache attribute references in Start() for frequently accessed attributes</li>
+          <li>Use event-driven UI updates instead of polling every frame</li>
+          <li>Leverage the IsDirty flag to avoid unnecessary UI updates</li>
+          <li>Regeneration is automatic - no manual Update() calls needed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔗 Related Documentation</h2>
+      <ul>
+        <li><a href="api-reference.html">API Reference</a> - Complete method documentation</li>
+        <li><a href="ui-binding.html">UI Binding System</a> - Connecting attributes to UI elements</li>
+        <li><a href="troubleshooting.html">Troubleshooting</a> - Common issues and solutions</li>
+        <li><a href="wizard-guide.html">Wizard Guide</a> - Creating attribute systems</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="wizard-guide.html">← Previous: Wizard Guide</a>
+      <a href="ui-binding.html">Next: UI Binding →</a>
+    </div>
+</body>
+
+</html>

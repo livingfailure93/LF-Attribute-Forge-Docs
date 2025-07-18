@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Troubleshooting - LF Attribute Forge</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="quick-start.html">Quick Start</a></li>
+      <li><a href="wizard-guide.html">Wizard Guide</a></li>
+      <li><a href="runtime-usage.html">Runtime Usage</a></li>
+      <li><a href="ui-binding.html">UI Binding</a></li>
+      <li><a href="import-export.html">Import/Export</a></li>
+      <li><a href="troubleshooting.html" class="active">Troubleshooting</a></li>
+      <li><a href="api-reference.html">API Reference</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / Troubleshooting
+  </div>
+
+  <div class="section">
+    <h1>🔧 Troubleshooting Guide</h1>
+    <p>Common issues and solutions for LF Attribute Forge.</p>
+  </div>
+
+  <div class="section">
+    <h2>⚠️ Installation Issues</h2>
+
+    <h3>Wizard Menu Missing</h3>
+    <div class="warning">
+      <strong>Problem:</strong> "Window → LF Attribute Forge" menu doesn't appear
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Wait for Unity to finish compiling scripts</li>
+        <li>Check Console for compilation errors</li>
+        <li>Ensure files are in correct folder structure</li>
+        <li>Reimport the package: Right-click → Reimport</li>
+        <li>Restart Unity if necessary</li>
+      </ul>
+    </div>
+
+    <h3>Compilation Errors</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Red errors in Console preventing compilation
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Check Unity version (2021.3+ required)</li>
+        <li>Ensure all LF Attribute Forge files are present</li>
+        <li>Clear Library folder and reimport</li>
+        <li>Check for conflicting scripts with same names</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔄 Regeneration Issues</h2>
+
+    <h3>Regeneration Not Working</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Vital attributes not regenerating automatically
+    </div>
+    <div class="success">
+      <strong>Checklist:</strong>
+      <ul>
+        <li>Verify behaviorType is set to LFBehaviorType.Vital</li>
+        <li>Ensure canRegenerate is enabled in inspector</li>
+        <li>Check regenerationRate > 0</li>
+        <li>Verify current value is below maximum</li>
+        <li>Use ModifyValue() for damage - NOT SetValue()</li>
+        <li>Check that generated component is using new coroutine system</li>
+      </ul>
+    </div>
+
+    <h3>Regeneration Starts Immediately</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Regeneration starts without delay
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Check regenerationDelay value (in seconds)</li>
+        <li>Ensure delay resets when value decreases again</li>
+        <li>Verify coroutine system is properly implemented</li>
+        <li>Check OnRegenerationStateChanged events for debugging</li>
+      </ul>
+    </div>
+
+    <h3>Regeneration Never Stops</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Regeneration continues after reaching max
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Check IsAtMax() method behavior</li>
+        <li>Verify max value calculations are correct</li>
+        <li>Ensure coroutine cleanup is working</li>
+        <li>Check for infinite loops in regeneration logic</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎯 Value Modification Issues</h2>
+
+    <h3>ModifyValue() vs SetValue() Confusion</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Values change but regeneration doesn't trigger
+    </div>
+    <div class="success">
+      <strong>Critical Rule:</strong>
+      <ul>
+        <li><strong>ModifyValue()</strong> - Use for gameplay (damage, healing) - TRIGGERS regeneration</li>
+        <li><strong>SetValue()</strong> - Use for admin/loading - NO regeneration triggered</li>
+        <li>Never use SetValue() for damage unless you want to bypass regeneration</li>
+        <li>Use ModifyValue() even for healing to maintain event consistency</li>
+      </ul>
+    </div>
+
+    <h3>Inspector Changes Not Working</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Changing values in inspector during play doesn't work
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Use generated component's "Sync Inspector Values" context menu</li>
+        <li>OnValidate() should handle inspector changes automatically</li>
+        <li>Check that OnValidate() is implemented in generated component</li>
+        <li>Ensure DelayedValidation coroutine is working</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🚀 Performance Issues</h2>
+
+    <h3>UI Updates Too Slow</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Frame rate drops when updating attribute UI
+    </div>
+    <div class="success">
+      <strong>Optimizations:</strong>
+      <ul>
+        <li>Use targeted updates (UpdateVitalAttributesUI) instead of UpdateAllUI</li>
+        <li>Update UI only when values actually change (event-driven)</li>
+        <li>Limit update frequency with timers (0.1 second intervals)</li>
+        <li>Cache UI component references</li>
+        <li>Use direct field access: attributes.health instead of GetAttribute()</li>
+      </ul>
+    </div>
+
+    <h3>Memory Leaks</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Memory usage increases over time
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Ensure event cleanup in OnDestroy()</li>
+        <li>Stop coroutines properly on component destruction</li>
+        <li>Don't create new strings in Update() loops</li>
+        <li>Use object pooling for temporary UI elements</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      // GOOD: Proper event cleanup
+      void OnDestroy()
+      {
+      if (health != null)
+      {
+      health.OnValueChanged -= OnHealthChanged;
+      health.OnReachedZero -= OnPlayerDeath;
+      health.OnRegenerationStateChanged -= OnRegenChanged;
+      }
+      }
+
+      // GOOD: Efficient dirty checking
+      void Update()
+      {
+      if (healthUI.IsDirty)
+      {
+      UpdateHealthUI();
+      healthUI.ClearDirtyFlag();
+      }
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔍 Debugging Tools</h2>
+
+    <h3>Built-in Debug Methods</h3>
+    <div class="code-block">
+      // Generated components include context menu debug tools:
+
+      [ContextMenu("Debug Active Regeneration")]
+      // Shows all active regeneration coroutines
+
+      [ContextMenu("Stop All Regeneration")]
+      // Manually stops all regeneration for testing
+
+      [ContextMenu("Fill All Vital Attributes")]
+      // Sets all vitals to maximum
+
+      [ContextMenu("Damage Test (25% Health)")]
+      // Applies test damage
+
+      [ContextMenu("Sync Inspector Values")]
+      // Forces sync of inspector changes to runtime
+    </div>
+
+    <h3>Custom Debug Methods</h3>
+    <div class="code-block">
+      // Add these to your scripts for debugging
+      [ContextMenu("Debug All Attributes")]
+      void DebugAttributes()
+      {
+      var all = GetComponent&lt;CharacterAttributes&gt;().GetAllAttributes();
+      foreach (var kvp in all)
+      {
+      var attr = kvp.Value;
+      Debug.Log($"{attr.attributeName}: {attr.GetCurrentValue()}/{attr.GetMaxValue()} " +
+      $"Dirty: {attr.IsDirty}, Regenerating: {attr.IsRegenerating}");
+      }
+      }
+
+      [ContextMenu("Test Regeneration")]
+      void TestRegeneration()
+      {
+      var health = GetComponent&lt;CharacterAttributes&gt;().health;
+      Debug.Log($"Before damage: {health.GetCurrentValue()}");
+      health.ModifyValue(-25f); // Should trigger regen
+      Debug.Log($"After damage: {health.GetCurrentValue()}");
+      }
+    </div>
+
+    <h3>Profiling Tips</h3>
+    <div class="success">
+      <strong>Performance Debugging Tools:</strong>
+      <ul>
+        <li>Unity Profiler - Check for allocation spikes</li>
+        <li>Frame Debugger - Identify UI overdraw issues</li>
+        <li>Deep Profile - Find expensive method calls</li>
+        <li>Memory Profiler - Track object lifecycles</li>
+        <li>Console logs with timestamps for event frequency</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚡ Performance Optimization Guide</h2>
+
+    <h3>Access Pattern Optimization</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🚀 Best Performance</h4>
+        <ul>
+          <li>Direct field access: <code>attributes.health</code></li>
+          <li>Cached references in Start()</li>
+          <li>Event-driven updates only</li>
+          <li>Targeted UI methods</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Good Performance</h4>
+        <ul>
+          <li>Enum-based access: <code>GetAttributeByEnum()</code></li>
+          <li>Rate-limited UI updates</li>
+          <li>Dirty flag checking</li>
+          <li>Batch operations</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚠️ Avoid in Update()</h4>
+        <ul>
+          <li>String-based lookups</li>
+          <li>UpdateAllUI() calls</li>
+          <li>Creating temporary objects</li>
+          <li>Unnecessary string operations</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Memory Management</h3>
+    <div class="code-block">
+      // GOOD: Proper event cleanup
+      void OnDestroy()
+      {
+      if (health != null)
+      {
+      health.OnValueChanged -= OnHealthChanged;
+      health.OnReachedZero -= OnPlayerDeath;
+      health.OnRegenerationStateChanged -= OnRegenChanged;
+      }
+      }
+
+      // GOOD: Efficient dirty checking
+      void Update()
+      {
+      foreach (var attr in vitals)
+      {
+      if (attr.IsDirty)
+      {
+      UpdateSpecificUI(attr);
+      // ClearDirtyFlag() called automatically
+      }
+      }
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🆘 Getting Help</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>📝 Before Reporting Issues</h4>
+        <ul>
+          <li>Check Unity Console for errors</li>
+          <li>Test with a fresh project</li>
+          <li>Note Unity version and LF Attribute Forge version</li>
+          <li>Try the solutions in this guide first</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>🔍 Useful Debug Info</h4>
+        <ul>
+          <li>Exact error messages from Console</li>
+          <li>Steps to reproduce the issue</li>
+          <li>Generated code samples if relevant</li>
+          <li>Performance Profiler screenshots</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="success">
+      <strong>💡 Quick Debugging Tips:</strong>
+      <ul>
+        <li>Use Debug.Log() to trace attribute value changes</li>
+        <li>Check IsDirty flags with context menu methods</li>
+        <li>Monitor regeneration with OnRegenerationStateChanged events</li>
+        <li>Test with minimal attribute setups first</li>
+        <li>Use Unity's built-in Profiler for performance issues</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 Related Documentation</h2>
+    <ul>
+      <li><a href="runtime-usage.html">Runtime Usage Guide</a> - Practical examples and patterns</li>
+      <li><a href="api-reference.html">API Reference</a> - Complete method documentation</li>
+      <li><a href="ui-binding.html">UI Binding System</a> - Connecting attributes to UI elements</li>
+      <li><a href="wizard-guide.html">Wizard Guide</a> - Creating attribute systems</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="import-export.html">← Previous: Import/Export</a>
+    <a href="api-reference.html">Next: API Reference →</a>
+  </div>
+</body>
+
+</html>

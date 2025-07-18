@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wizard Guide - LF Attribute Forge</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="quick-start.html">Quick Start</a></li>
+      <li><a href="wizard-guide.html" class="active">Wizard Guide</a></li>
+      <li><a href="runtime-usage.html">Runtime Usage</a></li>
+      <li><a href="ui-binding.html">UI Binding</a></li>
+      <li><a href="import-export.html">Import/Export</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="api-reference.html">API Reference</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / Wizard Guide
+  </div>
+
+  <div class="section">
+    <h1>🔮 Complete Wizard Guide</h1>
+    <p>Master every feature of the 4-step attribute creation process.</p>
+  </div>
+
+  <div class="section">
+    <h2>Step 1: Data Info</h2>
+    <p>Configure the foundational settings for your attribute system:</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🏷️ Basic Information</h4>
+        <ul>
+          <li><strong>Data Name:</strong> Display name for your collection</li>
+          <li><strong>Description:</strong> Purpose and context</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚙️ Code Generation</h4>
+        <ul>
+          <li><strong>Namespace:</strong> C# namespace (e.g., "Game.Attributes")</li>
+          <li><strong>Class Prefix:</strong> Prefix for classes (e.g., "Character")</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-block">
+      Generated Classes Preview:
+      ├── CharacterAttributeEnum.cs (type-safe IDs)
+      ├── CharacterAttributes.cs (runtime container)
+      ├── CharacterAttributeData.cs (ScriptableObject)
+      └── CharacterUIBinding.cs (UI integration)
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Naming Rules:</strong>
+      <ul>
+        <li>Use PascalCase for class prefixes</li>
+        <li>Avoid Unity reserved names (Component, GameObject, etc.)</li>
+        <li>Keep namespaces short and logical</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Step 2: Attribute Configuration</h2>
+    <p>Build your attributes using the enhanced property drawer:</p>
+
+    <h3>🏷️ Identity & Presentation</h3>
+    <div class="feature-card">
+      <ul>
+        <li><strong>Name:</strong> Full attribute name (e.g., "Health Points")</li>
+        <li><strong>Code:</strong> Short abbreviation (HP, MP, STR) - auto-generated</li>
+        <li><strong>Icon:</strong> Sprite for UI display</li>
+        <li><strong>Description:</strong> Tooltip and documentation text</li>
+      </ul>
+    </div>
+
+    <h3>⚙️ Behavior Types</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🔷 Basic</h4>
+        <p>Core stats like Strength, Dexterity</p>
+        <ul>
+          <li>No special restrictions</li>
+          <li>Direct value storage</li>
+          <li>Perfect for primary stats</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>❤️ Vital</h4>
+        <p>Health/Mana resources</p>
+        <ul>
+          <li>Current/Max value system</li>
+          <li>Can regenerate over time</li>
+          <li>Event system (OnReachedZero, etc.)</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>📊 Percentage</h4>
+        <p>Rates and chances</p>
+        <ul>
+          <li>Critical rates, dodge chance</li>
+          <li>No value limits</li>
+          <li>Can exceed 100%</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>💰 Resource</h4>
+        <p>Gold/XP/Level</p>
+        <ul>
+          <li>Automatically integer-only</li>
+          <li>Positive minimums enforced</li>
+          <li>Perfect for currencies</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>🔄 Regeneration System (Vital Only)</h3>
+    <div class="feature-card">
+      <ul>
+        <li><strong>Can Regenerate:</strong> Enable automatic recovery</li>
+        <li><strong>Regeneration Rate:</strong> Points per second</li>
+        <li><strong>Regeneration Delay:</strong> Cooldown after damage</li>
+      </ul>
+    </div>
+
+    <div class="success">
+      <strong>💡 Smart Features:</strong>
+      <ul>
+        <li>Auto-generate codes from names with the "Auto" button</li>
+        <li>Resource types automatically lock Force Integer</li>
+        <li>Regeneration fields only appear for Vital types</li>
+        <li>Real-time validation prevents invalid configurations</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Step 3: Code Generation Settings</h2>
+    <p>All files are generated automatically - no configuration needed!</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>✅ Attribute Enum</h4>
+        <p>Type-safe attribute IDs for runtime access</p>
+      </div>
+      <div class="feature-card">
+        <h4>✅ Attribute Class</h4>
+        <p>MonoBehaviour container with caching and validation</p>
+      </div>
+      <div class="feature-card">
+        <h4>✅ AttributeData ScriptableObject</h4>
+        <p>Data asset for tools and serialization</p>
+      </div>
+      <div class="feature-card">
+        <h4>✅ UI Binding Class</h4>
+        <p>Automatic UI synchronization system</p>
+      </div>
+    </div>
+
+    <div class="warning">
+      <strong>📁 File Locations:</strong>
+      <ul>
+        <li>Generated files save to: <code>Assets/Generated/</code></li>
+        <li>Namespace folders created automatically</li>
+        <li>Conflict detection shows overwrite warnings</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Step 4: Generate</h2>
+    <p>Review the generation summary and create all files:</p>
+
+    <div class="step-container">
+      <span class="step-number">1</span>
+      <strong>Review Summary</strong><br>
+      Check the list of files to be generated and any conflicts
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">2</span>
+      <strong>Click Generate</strong><br>
+      All code generation happens automatically
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">3</span>
+      <strong>Wait for Compilation</strong><br>
+      Unity compiles the new scripts
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">4</span>
+      <strong>ScriptableObject Created</strong><br>
+      Data asset automatically created and ready to use
+    </div>
+
+    <div class="success">
+      <strong>🎉 Generation Complete!</strong>
+      <ul>
+        <li>All files created successfully</li>
+        <li>Scripts compiled without errors</li>
+        <li>ScriptableObject ready for configuration</li>
+        <li>UI binding ready for immediate use</li>
+      </ul>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🔍 What's Generated</h4>
+        <ul>
+          <li>Type-safe enum for all attributes</li>
+          <li>Runtime container with caching</li>
+          <li>Complete IAttributeContainer implementation</li>
+          <li>UI binding with multiple update methods</li>
+          <li>Custom editor with minimal/full view</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Performance Features</h4>
+        <ul>
+          <li>Cached collections for fast lookups</li>
+          <li>Lazy initialization</li>
+          <li>Event-driven UI updates</li>
+          <li>Memory-efficient string matching</li>
+          <li>Batch UI operations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a href="quick-start.html">← Previous: Quick Start</a>
+    <a href="runtime-usage.html">Next: Runtime Usage →</a>
+  </div>
+</body>
+
+</html>

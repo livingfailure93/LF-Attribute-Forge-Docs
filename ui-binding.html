@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Binding - LF Attribute Forge</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="quick-start.html">Quick Start</a></li>
+      <li><a href="wizard-guide.html">Wizard Guide</a></li>
+      <li><a href="runtime-usage.html">Runtime Usage</a></li>
+      <li><a href="ui-binding.html" class="active">UI Binding</a></li>
+      <li><a href="import-export.html">Import/Export</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="api-reference.html">API Reference</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / UI Binding
+  </div>
+
+  <div class="section">
+    <h1>🎨 UI Binding System</h1>
+    <p>Connect attributes to UI elements with optimized performance and dirty checking.</p>
+
+    <div class="warning">
+      <strong>⚠️ Demo Implementation Notice:</strong>
+      The UI binding system shown here is a basic demonstration implementation. For production games, you should design
+      your own UI architecture that fits your specific needs, visual style, and performance requirements. Consider this
+      a starting point rather than a complete solution.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎯 LFAttributeUIBinding Component</h2>
+    <p>The core UI binding component that connects a single attribute to multiple UI elements.</p>
+
+    <h3>UI Component Fields</h3>
+    <div class="code-block">
+      [Header("Dynamic Content (Updates Frequently)")]
+      public Text currentValueText; // "75"
+      public Text currentMaxText; // "75/100"
+      public Text percentageText; // "75%"
+      public Image fillBar; // 0.0 to 1.0 fill
+      public Slider valueSlider; // Current value slider
+
+      [Header("Static Content (Updates Rarely)")]
+      public Text nameText; // "Health"
+      public Text codeText; // "HP"
+      public Text descriptionText; // "Character's life force"
+      public Image iconImage; // Attribute icon
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>⚡ Dynamic Content</h4>
+        <p>Updates frequently with dirty checking optimization.</p>
+        <ul>
+          <li>Current values and percentages</li>
+          <li>Fill bars and sliders</li>
+          <li>Real-time regeneration feedback</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>🏗️ Static Content</h4>
+        <p>Updates only when configuration changes.</p>
+        <ul>
+          <li>Names, codes, descriptions</li>
+          <li>Icons and styling</li>
+          <li>Max value changes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚡ IsDirty Performance Optimization</h2>
+
+    <div class="success">
+      <strong>🚀 Automatic Optimization:</strong>
+      <ul>
+        <li>UI only updates when attributes actually change</li>
+        <li>IsDirty flag tracks which attributes need UI updates</li>
+        <li>ClearDirtyFlag() called automatically after UI update</li>
+        <li>Massive performance improvement over constant updates</li>
+      </ul>
+    </div>
+
+    <h3>Smart Update Strategy</h3>
+    <div class="code-block">
+      // Most Efficient - Only update what changed
+      uiBinding.UpdateDirtyAttributesUI(attributes);
+
+      // Batch Updates for Specific Types
+      uiBinding.UpdateVitalAttributesUI(attributes); // Health/Mana only
+      uiBinding.UpdateBasicAttributesUI(attributes); // Stats only
+
+      // Force Update (bypasses dirty check)
+      uiBinding.ForceUpdateAttributeUI("Health", attributes);
+
+      // Traditional Updates (with automatic dirty checking)
+      uiBinding.UpdateAllUI(attributes); // All attributes (with dirty check)
+      uiBinding.UpdateAttributeUI("Health", attributes); // Single attribute
+    </div>
+
+    <h3>Performance Comparison</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>⚡ Fastest: Dirty Only</h4>
+        <div class="code-block">
+          uiBinding.UpdateDirtyAttributesUI(container);
+          // Only processes changed attributes
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>🚀 Fast: Targeted Updates</h4>
+        <div class="code-block">
+          uiBinding.UpdateVitalAttributesUI(container);
+          // Only updates Health/Mana/Stamina
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Good: Auto-Optimized</h4>
+        <div class="code-block">
+          uiBinding.UpdateAllUI(container);
+          // Checks dirty flags automatically
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🏗️ Generated UI Binding Class</h2>
+    <p>Auto-generated class for managing all attribute UI elements with multiple performance tiers.</p>
+
+    <h3>Performance Tiers</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🚀 Direct Access (Fastest)</h4>
+        <div class="code-block">
+          // Direct container access - no dictionary lookups
+          public void UpdateAllUI(CharacterAttributes container)
+          {
+          UpdateAttributeUI(healthUI, container.health);
+          UpdateAttributeUI(manaUI, container.mana);
+          // etc...
+          }
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Cached Dictionary</h4>
+        <div class="code-block">
+          // Cached UI binding lookup
+          public void UpdateAllUI(IAttributeContainer container)
+          {
+          // Uses _uiBindingCache for O(1) lookups
+          // Built once, reused for all updates
+          }
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>🎯 Targeted Updates</h4>
+        <div class="code-block">
+          // Update only specific attribute types
+          public void UpdateVitalAttributesUI(container)
+          public void UpdateBasicAttributesUI(container)
+          // Much faster than updating everything
+        </div>
+      </div>
+    </div>
+
+    <h3>Example Generated Methods</h3>
+    <div class="code-block">
+      public class CharacterUIBinding : MonoBehaviour
+      {
+      [Header("Health UI")]
+      public LFAttributeUIBinding healthUI;
+
+      [Header("Mana UI")]
+      public LFAttributeUIBinding manaUI;
+
+      // Cached dictionary for performance
+      private Dictionary&lt;string, LFAttributeUIBinding&gt; _uiBindingCache;
+
+      // FASTEST: Direct field access
+      public void UpdateAllUI(CharacterAttributes container)
+      {
+      if (container == null) return;
+      UpdateAttributeUI(healthUI, container.health);
+      UpdateAttributeUI(manaUI, container.mana);
+      }
+
+      // FAST: Cached dictionary lookup
+      public void UpdateAllUI(IAttributeContainer container)
+      {
+      if (container == null) return;
+      // Uses cached dictionary for O(1) lookups
+      }
+
+      // TARGETED: Only vital attributes (Health, Mana, Stamina)
+      public void UpdateVitalAttributesUI(IAttributeContainer container)
+      {
+      // Much faster than updating all attributes
+      }
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚡ Event-Driven UI Examples</h2>
+
+    <h3>Optimized Event Management</h3>
+    <div class="code-block">
+      public class SmartUIManager : MonoBehaviour
+      {
+      [Header("UI Bindings")]
+      public CharacterUIBinding uiBinding;
+
+      [Header("Settings")]
+      public float uiUpdateInterval = 0.1f; // Limit update frequency
+
+      private CharacterAttributes playerAttributes;
+      private float lastUIUpdate;
+      private bool needsUIUpdate;
+
+      void Start()
+      {
+      playerAttributes = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Subscribe to specific events instead of polling
+      playerAttributes.health.OnValueChanged += MarkUIForUpdate;
+      playerAttributes.mana.OnValueChanged += MarkUIForUpdate;
+
+      // Subscribe to regeneration events for visual feedback
+      playerAttributes.health.OnRegenerationStateChanged += OnHealthRegenChanged;
+      }
+
+      void MarkUIForUpdate()
+      {
+      needsUIUpdate = true;
+      }
+
+      void Update()
+      {
+      // Rate-limited UI updates for performance
+      if (needsUIUpdate && Time.time - lastUIUpdate > uiUpdateInterval)
+      {
+      RefreshUI();
+      needsUIUpdate = false;
+      lastUIUpdate = Time.time;
+      }
+      }
+
+      void RefreshUI()
+      {
+      // Use the fastest update method available
+      uiBinding.UpdateVitalAttributesUI(playerAttributes);
+      }
+
+      void OnHealthRegenChanged(bool isRegenerating)
+      {
+      // Visual feedback for regeneration state
+      if (healthRegenEffect != null)
+      healthRegenEffect.SetActive(isRegenerating);
+      }
+
+      void OnDestroy()
+      {
+      // Critical: Always unsubscribe to prevent memory leaks
+      if (playerAttributes != null)
+      {
+      playerAttributes.health.OnValueChanged -= MarkUIForUpdate;
+      playerAttributes.mana.OnValueChanged -= MarkUIForUpdate;
+      playerAttributes.health.OnRegenerationStateChanged -= OnHealthRegenChanged;
+      }
+      }
+      }
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Important:</strong>
+      Regeneration is now automatic using coroutines. Do NOT call Update(deltaTime) methods manually - the system
+      handles regeneration automatically when values decrease.
+    </div>
+
+    <h3>Batch Update Example</h3>
+    <div class="code-block">
+      public class BatchUIManager : MonoBehaviour
+      {
+      private List&lt;LFRuntimeAttribute&gt; dirtyAttributes = new List&lt;LFRuntimeAttribute&gt;();
+
+      void Update()
+      {
+      // Check all attributes for dirty flags
+      CheckForDirtyAttributes();
+
+      // Batch update only dirty attributes
+      if (dirtyAttributes.Count > 0)
+      {
+      UpdateDirtyAttributesUI();
+      dirtyAttributes.Clear();
+      }
+      }
+
+      void CheckForDirtyAttributes()
+      {
+      dirtyAttributes.Clear();
+      var allAttributes = playerAttributes.GetAllAttributeInstances();
+
+      foreach (var attr in allAttributes)
+      {
+      if (attr.IsDirty)
+      dirtyAttributes.Add(attr);
+      }
+      }
+
+      void UpdateDirtyAttributesUI()
+      {
+      foreach (var attr in dirtyAttributes)
+      {
+      var ui = GetUIBindingForAttribute(attr.attributeName);
+      if (ui != null)
+      {
+      ui.UpdateDynamicContent(attr);
+      // ClearDirtyFlag() called automatically
+      }
+      }
+      }
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎮 Practical Implementation</h2>
+
+    <h3>Quick Setup Guide</h3>
+    <div class="step-container">
+      <span class="step-number">1</span>
+      <strong>Generate UI Binding Class</strong><br>
+      Use the Attribute Data Wizard to generate your UIBinding class
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">2</span>
+      <strong>Create UI Elements</strong><br>
+      Add Text, Image, Slider components to your Canvas
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">3</span>
+      <strong>Configure LFAttributeUIBinding</strong><br>
+      Drag UI components to the appropriate fields
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">4</span>
+      <strong>Subscribe to Events</strong><br>
+      Use event-driven updates for optimal performance
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Performance Warning:</strong>
+      <ul>
+        <li>Never call UpdateAllUI() in Update() without rate limiting</li>
+        <li>Use targeted updates (UpdateVitalAttributesUI) when possible</li>
+        <li>Always unsubscribe from events in OnDestroy()</li>
+        <li>Cache attribute references instead of repeated GetAttribute() calls</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔧 Advanced Customization</h2>
+
+    <h3>Custom Update Logic</h3>
+    <div class="code-block">
+      // Extend LFAttributeUIBinding for custom behavior
+      public class CustomHealthUI : LFAttributeUIBinding
+      {
+      [Header("Custom Health Features")]
+      public Image lowHealthWarning;
+      public AudioSource heartbeatSound;
+
+      public override void UpdateDynamicContent(LFRuntimeAttribute attr, bool forceUpdate = false)
+      {
+      // Call base implementation first
+      base.UpdateDynamicContent(attr, forceUpdate);
+
+      // Add custom logic
+      float percentage = attr.GetPercentage();
+
+      // Low health visual feedback
+      if (lowHealthWarning != null)
+      lowHealthWarning.gameObject.SetActive(percentage < 0.25f); // Audio feedback if (heartbeatSound !=null &&
+        percentage < 0.25f) { if (!heartbeatSound.isPlaying) heartbeatSound.Play(); } } } </div>
+    </div>
+
+    <div class="section">
+      <h2>🔗 Related Documentation</h2>
+      <ul>
+        <li><a href="runtime-usage.html">Runtime Usage Guide</a> - Practical examples and patterns</li>
+        <li><a href="api-reference.html">API Reference</a> - Complete method documentation</li>
+        <li><a href="troubleshooting.html">Troubleshooting</a> - Common issues and solutions</li>
+        <li><a href="wizard-guide.html">Wizard Guide</a> - Creating attribute systems</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="runtime-usage.html">← Previous: Runtime Usage</a>
+      <a href="import-export.html">Next: Import/Export →</a>
+    </div>
+</body>
+
+</html>

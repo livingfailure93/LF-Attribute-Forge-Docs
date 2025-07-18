@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LF Attribute Forge - Complete Documentation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    /* Single page specific styles */
+    .toc {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      position: sticky;
+      top: 20px;
+      z-index: 100;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc li {
+      margin: 5px 0;
+    }
+
+    .toc a {
+      color: #495057;
+      text-decoration: none;
+      display: block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .toc a:hover {
+      background: #e9ecef;
+      color: #2c3e50;
+    }
+
+    .section-divider {
+      border-top: 3px solid #3498db;
+      margin: 40px 0;
+      padding-top: 20px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #3498db;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+
+    .back-to-top:hover {
+      background: #2980b9;
+    }
+
+    /* Print styles */
+    @media print {
+
+      .toc,
+      .back-to-top,
+      .navbar {
+        display: none;
+      }
+
+      .section {
+        page-break-inside: avoid;
+        margin: 10px 0;
+      }
+
+      .code-block {
+        page-break-inside: avoid;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Format Selector -->
+  <div class="format-selector">
+    <span class="format-label">View Format:</span>
+    <a href="index.html" class="format-link">Multi-Page</a>
+    <a href="single-page.html" class="format-link active">Single Page</a>
+  </div>
+
+  <!-- Header -->
+  <div class="header"></div>
+
+  <div class="section">
+    <h1 id="top">🎯 LF Attribute Forge - Complete Documentation</h1>
+    <p>Transform Unity game development by eliminating boilerplate code for character stats, RPG systems, and attribute
+      management.</p>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h3>📋 Table of Contents</h3>
+      <ul>
+        <li><a href="#installation">📦 Installation</a></li>
+        <li><a href="#quick-start">🚀 Quick Start</a></li>
+        <li><a href="#wizard-guide">🔮 Wizard Guide</a></li>
+        <li><a href="#runtime-usage">🎮 Runtime Usage</a></li>
+        <li><a href="#ui-binding">🎨 UI Binding</a></li>
+        <li><a href="#import-export">📁 Import/Export</a></li>
+        <li><a href="#troubleshooting">🔧 Troubleshooting</a></li>
+        <li><a href="#api-reference">📚 API Reference</a></li>
+        <li><a href="#about">👋 About</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Installation Section -->
+  <div class="section section-divider" id="installation">
+    <h1>📦 Installation</h1>
+
+    <h2>Unity Asset Store</h2>
+    <ol>
+      <li>Open Unity Asset Store in your browser or Package Manager</li>
+      <li>Search for "LF Attribute Forge"</li>
+      <li>Download and import the package</li>
+      <li>Wait for Unity to compile the scripts</li>
+    </ol>
+
+    <h2>Unity Package Manager</h2>
+    <ol>
+      <li>Open Unity Package Manager (Window → Package Manager)</li>
+      <li>Click "My Assets" dropdown</li>
+      <li>Find "LF Attribute Forge" and click Import</li>
+      <li>Wait for installation to complete</li>
+    </ol>
+
+    <h2>Manual Installation</h2>
+    <ol>
+      <li>Download the LF Attribute Forge .unitypackage file</li>
+      <li>Double-click the .unitypackage file to import</li>
+      <li>Check all files and click Import</li>
+      <li>Wait for Unity to compile the scripts</li>
+    </ol>
+
+    <div class="success">
+      <strong>✅ Installation Complete!</strong><br>
+      Access the wizard via: <strong>Window → LF Attribute Forge → Attribute Data Wizard</strong>
+    </div>
+
+    <h2>Requirements</h2>
+    <ul>
+      <li>Unity 2021.3 or newer</li>
+      <li>No external dependencies required</li>
+    </ul>
+  </div>
+
+  <!-- Quick Start Section -->
+  <div class="section section-divider" id="quick-start">
+    <h1>🚀 Quick Start Guide</h1>
+    <p>Create your first attribute system in under 5 minutes!</p>
+
+    <div class="step-container">
+      <span class="step-number">1</span>
+      <strong>Open the Wizard</strong><br>
+      Navigate to <code>Window → LF Attribute Forge → Attribute Data Wizard</code>
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">2</span>
+      <strong>Configure Data Info</strong><br>
+      <ul>
+        <li><strong>Data Name:</strong> "Character Attributes"</li>
+        <li><strong>Namespace:</strong> "Game.Attributes"</li>
+        <li><strong>Class Prefix:</strong> "Character"</li>
+      </ul>
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">3</span>
+      <strong>Add Basic Attributes</strong><br>
+      Click "Add New" and create these essential attributes:
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>Health (Vital)</h4>
+          <ul>
+            <li>Code: HP</li>
+            <li>Value: 100</li>
+            <li>Can Regenerate: Yes</li>
+            <li>Regen Rate: 1.0/sec</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h4>Strength (Basic)</h4>
+          <ul>
+            <li>Code: STR</li>
+            <li>Value: 10</li>
+            <li>Min: 1, Max: 100</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-container">
+      <span class="step-number">4</span>
+      <strong>Generate Code</strong><br>
+      Click "Next" through Code Settings, then hit "Generate"
+    </div>
+
+    <div class="success">
+      <strong>🎉 Complete!</strong> You now have:
+      <ul>
+        <li>CharacterAttributeEnum.cs</li>
+        <li>CharacterAttributes.cs (with coroutine-based regeneration)</li>
+        <li>CharacterAttributeData.cs</li>
+        <li>CharacterUIBinding.cs</li>
+      </ul>
+    </div>
+
+    <h2>✨ Test Your New System</h2>
+
+    <h3>Add to GameObject</h3>
+    <ol>
+      <li>Create an empty GameObject</li>
+      <li>Add the generated <code>CharacterAttributes</code> component</li>
+      <li>See your attributes in the inspector!</li>
+    </ol>
+
+    <h3>Quick Runtime Test</h3>
+    <div class="code-block">
+      // Get component and test basic functionality
+      var attrs = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Damage the player - triggers automatic regeneration
+      attrs.health.ModifyValue(-25f);
+      Debug.Log($"Health: {attrs.health.GetCurrentValue()}");
+
+      // Regeneration starts automatically after delay
+      // No manual Update() calls needed!
+
+      // Check if alive
+      if (attrs.health.IsAtMin())
+      {
+      Debug.Log("Player died!");
+      }
+    </div>
+
+    <div class="warning">
+      <strong>💡 Next Steps:</strong>
+      <ul>
+        <li>Read the complete wizard guide for advanced features</li>
+        <li>Learn runtime usage patterns for game integration</li>
+        <li>Set up UI binding for health bars and stat displays</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Wizard Guide Section -->
+  <div class="section section-divider" id="wizard-guide">
+    <h1>🔮 Complete Wizard Guide</h1>
+    <p>Master every feature of the 4-step attribute creation process.</p>
+
+    <h2>Step 1: Data Info</h2>
+    <p>Configure the foundational settings for your attribute system:</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🏷️ Basic Information</h4>
+        <ul>
+          <li><strong>Data Name:</strong> Display name for your collection</li>
+          <li><strong>Description:</strong> Purpose and context</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚙️ Code Generation</h4>
+        <ul>
+          <li><strong>Namespace:</strong> C# namespace (e.g., "Game.Attributes")</li>
+          <li><strong>Class Prefix:</strong> Prefix for classes (e.g., "Character")</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-block">
+      Generated Classes Preview:
+      ├── CharacterAttributeEnum.cs (type-safe IDs)
+      ├── CharacterAttributes.cs (runtime container with coroutine system)
+      ├── CharacterAttributeData.cs (ScriptableObject)
+      └── CharacterUIBinding.cs (UI integration)
+    </div>
+
+    <h2>Step 2: Attribute Builder</h2>
+    <p>Create and configure your game's attributes:</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🔧 Basic Attributes</h4>
+        <ul>
+          <li>Core stats like Strength, Dexterity</li>
+          <li>Simple values with min/max ranges</li>
+          <li>No special behaviors</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>💚 Vital Attributes</h4>
+        <ul>
+          <li>Health, Mana, Stamina</li>
+          <li>Current vs Maximum values</li>
+          <li>Automatic coroutine-based regeneration</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>💰 Resource Attributes</h4>
+        <ul>
+          <li>Gold, Experience Points</li>
+          <li>Always integer values</li>
+          <li>Accumulative resources</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>📊 Percentage Attributes</h4>
+        <ul>
+          <li>Critical Hit Rate, Block Chance</li>
+          <li>0-100% or 0.0-1.0 values</li>
+          <li>Rate-based mechanics</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Step 3: Code Settings</h2>
+    <p>Advanced configuration options for generated code:</p>
+
+    <div class="warning">
+      <strong>📁 File Locations:</strong>
+      <ul>
+        <li>Generated files save to: <code>Assets/Generated/</code></li>
+        <li>Namespace folders created automatically</li>
+        <li>Conflict detection shows overwrite warnings</li>
+      </ul>
+    </div>
+
+    <h2>Step 4: Generate</h2>
+    <p>Review the generation summary and create all files:</p>
+
+    <div class="success">
+      <strong>🎉 Generation Complete!</strong>
+      <ul>
+        <li>All files created with coroutine-based regeneration</li>
+        <li>Scripts compiled without errors</li>
+        <li>ScriptableObject ready for configuration</li>
+        <li>UI binding ready for immediate use</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Runtime Usage Section -->
+  <div class="section section-divider" id="runtime-usage">
+    <h1>🎮 Runtime Usage Guide</h1>
+    <p>Practical examples and performance patterns for using generated attribute systems in your game.</p>
+
+    <h2>⚠️ Critical: ModifyValue vs SetValue</h2>
+    <div class="warning">
+      <strong>Understanding the difference is crucial for regeneration!</strong>
+    </div>
+
+    <h3>🎮 ModifyValue() - For Gameplay</h3>
+    <div class="code-block">
+      // USE FOR: Damage, healing, consumption, gameplay changes
+      // RESULT: Fires regeneration events, triggers coroutines
+
+      attributes.health.ModifyValue(-25f); // Damage - will start regen
+      attributes.mana.ModifyValue(-10f); // Spell cost - will start regen
+      attributes.health.ModifyValue(15f); // Healing potion
+    </div>
+
+    <h3>🔧 SetValue() - For Admin/Loading</h3>
+    <div class="code-block">
+      // USE FOR: Initialization, loading saves, admin commands
+      // RESULT: No regeneration events fired
+
+      attributes.health.SetValue(100f); // Set to full health
+      attributes.level.SetValue(50f); // Load save data
+      attributes.health.SetValue(1f); // Debug/testing
+    </div>
+
+    <div class="success">
+      <strong>💡 Key Rule:</strong>
+      Use ModifyValue() for gameplay changes that should trigger regeneration. Use SetValue() for administrative changes
+      that shouldn't.
+    </div>
+
+    <h2>🔄 Automatic Regeneration System</h2>
+    <p>The new system uses coroutines and events - no manual Update() calls needed.</p>
+
+    <h3>How Regeneration Works</h3>
+    <div class="code-block">
+      // 1. Damage occurs
+      attributes.health.ModifyValue(-50f);
+
+      // 2. Regeneration automatically starts (if canRegenerate = true)
+      // 3. Coroutine waits for regenerationDelay
+      // 4. Coroutine calls RegenerateStep() each frame until full
+      // 5. Regeneration stops when max reached
+
+      // NO MANUAL CALLS NEEDED - IT'S AUTOMATIC!
+    </div>
+
+    <h3>Regeneration Configuration</h3>
+    <div class="code-block">
+      // Set in inspector or via code
+      attributes.health.canRegenerate = true;
+      attributes.health.regenerationRate = 2.5f; // 2.5 HP per second
+      attributes.health.regenerationDelay = 3f; // 3 second delay after damage
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Important:</strong>
+      The system is fully automatic. Do NOT call Update() methods manually - they don't exist in the new system.
+    </div>
+
+    <h2>⚡ Performance-Optimized Access Patterns</h2>
+
+    <h3>Access Method Performance Ranking</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🚀 Direct Field Access (Fastest)</h4>
+        <div class="code-block">
+          // Zero overhead - direct field access
+          attributes.health.ModifyValue(-25f);
+          float current = attributes.health.GetCurrentValue();
+
+          // Perfect for Update() loops and frequent access
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Enum-Based Access (Fast)</h4>
+        <div class="code-block">
+          // Type-safe with cached dictionary lookup
+          var health = attributes.GetAttributeByEnum(CharacterAttributeEnum.Health);
+          health.ModifyValue(-25f);
+
+          // Good balance of performance and flexibility
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>🎯 String-Based Access (Flexible)</h4>
+        <div class="code-block">
+          // Dynamic access with fallback mechanisms
+          attributes.ModifyAttribute("Health", -25f);
+
+          // Use for configurable/data-driven scenarios
+        </div>
+      </div>
+    </div>
+
+    <h2>🔥 Combat System Example</h2>
+    <div class="code-block">
+      public class CombatManager : MonoBehaviour
+      {
+      [Header("Cached References")]
+      private LFRuntimeAttribute health;
+      private LFRuntimeAttribute mana;
+      private LFRuntimeAttribute armor;
+
+      void Start()
+      {
+      var attributes = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Cache references for performance
+      health = attributes.health;
+      mana = attributes.mana;
+      armor = attributes.armor;
+      }
+
+      public void TakeDamage(float rawDamage)
+      {
+      // Calculate damage reduction from armor
+      float armorValue = armor.GetCurrentValue();
+      float damageReduction = armorValue / (armorValue + 100f);
+      float finalDamage = rawDamage * (1f - damageReduction);
+
+      // Apply damage - triggers regeneration automatically
+      health.ModifyValue(-finalDamage);
+
+      Debug.Log($"Took {finalDamage:F1} damage");
+
+      if (health.IsAtMin())
+      {
+      HandleDeath();
+      }
+      }
+      }
+    </div>
+
+    <h2>🎯 Event-Driven UI Updates</h2>
+    <div class="code-block">
+      public class PlayerUIManager : MonoBehaviour
+      {
+      [Header("Components")]
+      public CharacterAttributes attributes;
+      public CharacterUIBinding uiBinding;
+
+      [Header("Performance Settings")]
+      public float uiUpdateInterval = 0.1f; // Limit UI update frequency
+
+      private LFRuntimeAttribute health;
+      private float lastUIUpdate;
+      private bool needsUIUpdate;
+
+      void Start()
+      {
+      // Cache attribute reference for performance
+      health = attributes.health;
+
+      // Subscribe to specific events
+      health.OnValueChanged += OnHealthChanged;
+      health.OnReachedZero += OnPlayerDeath;
+      health.OnRegenerationStateChanged += OnHealthRegenChanged;
+
+      // Initial UI setup
+      uiBinding.UpdateAllUI(attributes);
+      }
+
+      void OnHealthChanged()
+      {
+      // Mark for UI update instead of updating immediately
+      needsUIUpdate = true;
+      }
+
+      void Update()
+      {
+      // Rate-limited UI updates for performance
+      if (needsUIUpdate && Time.time - lastUIUpdate > uiUpdateInterval)
+      {
+      // Use targeted update for better performance
+      uiBinding.UpdateVitalAttributesUI(attributes);
+      needsUIUpdate = false;
+      lastUIUpdate = Time.time;
+      }
+      }
+
+      void OnHealthRegenChanged(bool isRegenerating)
+      {
+      // Visual feedback for regeneration
+      Debug.Log($"Health regeneration: {(isRegenerating ? "Started" : "Stopped")}");
+      }
+
+      void OnPlayerDeath()
+      {
+      Debug.Log("Player has died!");
+      }
+
+      void OnDestroy()
+      {
+      // Clean up event subscriptions
+      if (health != null)
+      {
+      health.OnValueChanged -= OnHealthChanged;
+      health.OnReachedZero -= OnPlayerDeath;
+      health.OnRegenerationStateChanged -= OnHealthRegenChanged;
+      }
+      }
+      }
+    </div>
+
+    <div class="success">
+      <strong>💡 Key Performance Rules:</strong>
+      <ul>
+        <li>Cache attribute references in Start() for frequently accessed attributes</li>
+        <li>Use event-driven UI updates instead of polling every frame</li>
+        <li>Leverage the IsDirty flag to avoid unnecessary UI updates</li>
+        <li>Regeneration is automatic - no manual calls needed</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- UI Binding Section -->
+  <div class="section section-divider" id="ui-binding">
+    <h1>🎨 UI Binding System</h1>
+    <p>Connect attributes to UI elements with optimized performance and dirty checking.</p>
+
+    <div class="warning">
+      <strong>⚠️ Demo Implementation Notice:</strong>
+      The UI binding system shown here is a basic demonstration implementation. For production games, you should design
+      your own UI architecture that fits your specific needs, visual style, and performance requirements. Consider this
+      a starting point rather than a complete solution.
+    </div>
+
+    <h2>🎯 LFAttributeUIBinding Component</h2>
+    <p>The core UI binding component that connects a single attribute to multiple UI elements.</p>
+
+    <h3>UI Component Fields</h3>
+    <div class="code-block">
+      [Header("Dynamic Content (Updates Frequently)")]
+      public Text currentValueText; // "75"
+      public Text currentMaxText; // "75/100"
+      public Text percentageText; // "75%"
+      public Image fillBar; // 0.0 to 1.0 fill
+      public Slider valueSlider; // Current value slider
+
+      [Header("Static Content (Updates Rarely)")]
+      public Text nameText; // "Health"
+      public Text codeText; // "HP"
+      public Text descriptionText; // "Character's life force"
+      public Image iconImage; // Attribute icon
+    </div>
+
+    <h2>🚀 Performance-Optimized Updates</h2>
+    <div class="code-block">
+      // PERFORMANCE CRITICAL: Use this in Update() loops
+      public void UpdateDynamicContent(LFRuntimeAttribute attr, bool forceUpdate = false)
+      {
+      // Only updates if values actually changed or IsDirty flag is set
+      // Uses cached comparisons to avoid unnecessary UI operations
+      // Automatically calls attr.ClearDirtyFlag() after update
+      }
+
+      // OCCASIONAL: Call when max values or equipment changes
+      public void UpdateStaticContent(LFRuntimeAttribute attr)
+      {
+      // Updates name, description, icon, max value displays
+      // Should not be called every frame
+      }
+    </div>
+
+    <h2>⚡ Event-Driven UI Examples</h2>
+    <div class="code-block">
+      public class SmartUIManager : MonoBehaviour
+      {
+      [Header("UI Bindings")]
+      public CharacterUIBinding uiBinding;
+
+      [Header("Settings")]
+      public float uiUpdateInterval = 0.1f; // Limit update frequency
+
+      private CharacterAttributes playerAttributes;
+      private float lastUIUpdate;
+      private bool needsUIUpdate;
+
+      void Start()
+      {
+      playerAttributes = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Subscribe to specific events instead of polling
+      playerAttributes.health.OnValueChanged += MarkUIForUpdate;
+      playerAttributes.mana.OnValueChanged += MarkUIForUpdate;
+
+      // Subscribe to regeneration events for visual feedback
+      playerAttributes.health.OnRegenerationStateChanged += OnHealthRegenChanged;
+      }
+
+      void MarkUIForUpdate()
+      {
+      needsUIUpdate = true;
+      }
+
+      void Update()
+      {
+      // Rate-limited UI updates for performance
+      if (needsUIUpdate && Time.time - lastUIUpdate > uiUpdateInterval)
+      {
+      RefreshUI();
+      needsUIUpdate = false;
+      lastUIUpdate = Time.time;
+      }
+      }
+
+      void RefreshUI()
+      {
+      // Use the fastest update method available
+      uiBinding.UpdateVitalAttributesUI(playerAttributes);
+      }
+
+      void OnHealthRegenChanged(bool isRegenerating)
+      {
+      // Visual feedback for regeneration state
+      if (healthRegenEffect != null)
+      healthRegenEffect.SetActive(isRegenerating);
+      }
+
+      void OnDestroy()
+      {
+      // Critical: Always unsubscribe to prevent memory leaks
+      if (playerAttributes != null)
+      {
+      playerAttributes.health.OnValueChanged -= MarkUIForUpdate;
+      playerAttributes.mana.OnValueChanged -= MarkUIForUpdate;
+      playerAttributes.health.OnRegenerationStateChanged -= OnHealthRegenChanged;
+      }
+      }
+      }
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Important:</strong>
+      Regeneration is now automatic using coroutines. Do NOT call Update(deltaTime) methods manually - the system
+      handles regeneration automatically when values decrease.
+    </div>
+  </div>
+
+  <!-- Import/Export Section -->
+  <div class="section section-divider" id="import-export">
+    <h1>📁 Import/Export System</h1>
+    <p>Share, backup, and create attribute configurations with AI-friendly JSON workflows.</p>
+
+    <h2>📤 Export Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🔧 Wizard Configuration</h4>
+        <ul>
+          <li>Data name and description</li>
+          <li>Namespace and class prefixes</li>
+          <li>All naming conventions</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚙️ Attribute Data</h4>
+        <ul>
+          <li>Complete attribute definitions</li>
+          <li>Behavior types and settings</li>
+          <li>Icons and codes</li>
+          <li>Regeneration configurations</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>🤖 AI-Friendly Metadata</h4>
+        <ul>
+          <li>Validation rules and constraints</li>
+          <li>Field descriptions and examples</li>
+          <li>Behavior type explanations</li>
+          <li>Template structure guidance</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>🤖 AI-Assisted Workflows</h2>
+
+    <div class="warning">
+      <strong>⚠️ Generative AI Disclaimer:</strong><br>
+      The AI-assisted workflow features are provided for convenience only. Users are solely responsible for ensuring
+      ethical use of generative AI tools and compliance with all applicable terms of service, licensing agreements, and
+      legal requirements.
+    </div>
+
+    <h3>Basic JSON Format</h3>
+    <div class="code-block">
+      {
+      "dataName": "Character Attributes",
+      "dataDescription": "RPG character stat system",
+      "namespacePrefix": "Game.Attributes",
+      "classNamePrefix": "Character",
+      "attributes": [
+      {
+      "name": "Health",
+      "code": "HP",
+      "behaviorType": "Vital",
+      "value": 100.0,
+      "canRegenerate": true,
+      "regenerationRate": 1.5
+      }
+      ]
+      }
+    </div>
+  </div>
+
+  <!-- Troubleshooting Section -->
+  <div class="section section-divider" id="troubleshooting">
+    <h1>🔧 Troubleshooting Guide</h1>
+    <p>Common issues and solutions for LF Attribute Forge.</p>
+
+    <h2>⚠️ Installation Issues</h2>
+
+    <h3>Wizard Menu Missing</h3>
+    <div class="warning">
+      <strong>Problem:</strong> "Window → LF Attribute Forge" menu doesn't appear
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Wait for Unity to finish compiling scripts</li>
+        <li>Check Console for compilation errors</li>
+        <li>Ensure files are in correct folder structure</li>
+        <li>Reimport the package: Right-click → Reimport</li>
+        <li>Restart Unity if necessary</li>
+      </ul>
+    </div>
+
+    <h2>🔄 Regeneration Issues</h2>
+
+    <h3>Regeneration Not Working</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Vital attributes not regenerating automatically
+    </div>
+    <div class="success">
+      <strong>Checklist:</strong>
+      <ul>
+        <li>Verify behaviorType is set to LFBehaviorType.Vital</li>
+        <li>Ensure canRegenerate is enabled in inspector</li>
+        <li>Check regenerationRate > 0</li>
+        <li>Verify current value is below maximum</li>
+        <li>Use ModifyValue() for damage - NOT SetValue()</li>
+        <li>Check that generated component is using new coroutine system</li>
+      </ul>
+    </div>
+
+    <h3>ModifyValue() vs SetValue() Confusion</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Values change but regeneration doesn't trigger
+    </div>
+    <div class="success">
+      <strong>Critical Rule:</strong>
+      <ul>
+        <li><strong>ModifyValue()</strong> - Use for gameplay (damage, healing) - TRIGGERS regeneration</li>
+        <li><strong>SetValue()</strong> - Use for admin/loading - NO regeneration triggered</li>
+        <li>Never use SetValue() for damage unless you want to bypass regeneration</li>
+        <li>Use ModifyValue() even for healing to maintain event consistency</li>
+      </ul>
+    </div>
+
+    <h3>Inspector Changes Not Working</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Changing values in inspector during play doesn't work
+    </div>
+    <div class="success">
+      <strong>Solutions:</strong>
+      <ul>
+        <li>Use generated component's "Sync Inspector Values" context menu</li>
+        <li>OnValidate() should handle inspector changes automatically</li>
+        <li>Check that OnValidate() is implemented in generated component</li>
+        <li>Ensure DelayedValidation coroutine is working</li>
+      </ul>
+    </div>
+
+    <h2>🚀 Performance Issues</h2>
+
+    <h3>UI Updates Too Slow</h3>
+    <div class="warning">
+      <strong>Problem:</strong> Frame rate drops when updating attribute UI
+    </div>
+    <div class="success">
+      <strong>Optimizations:</strong>
+      <ul>
+        <li>Use targeted updates (UpdateVitalAttributesUI) instead of UpdateAllUI</li>
+        <li>Update UI only when values actually change (event-driven)</li>
+        <li>Limit update frequency with timers (0.1 second intervals)</li>
+        <li>Cache UI component references</li>
+        <li>Use direct field access: attributes.health instead of GetAttribute()</li>
+      </ul>
+    </div>
+
+    <h2>⚡ Performance Optimization Guide</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🚀 Best Performance</h4>
+        <ul>
+          <li>Direct field access: <code>attributes.health</code></li>
+          <li>Cached references in Start()</li>
+          <li>Event-driven updates only</li>
+          <li>Targeted UI methods</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Good Performance</h4>
+        <ul>
+          <li>Enum-based access: <code>GetAttributeByEnum()</code></li>
+          <li>Rate-limited UI updates</li>
+          <li>Dirty flag checking</li>
+          <li>Batch operations</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚠️ Avoid in Update()</h4>
+        <ul>
+          <li>String-based lookups</li>
+          <li>UpdateAllUI() calls</li>
+          <li>Creating temporary objects</li>
+          <li>Unnecessary string operations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Reference Section -->
+  <div class="section section-divider" id="api-reference">
+    <h1>📚 API Reference</h1>
+    <p>Complete reference for all LF Attribute Forge classes and methods.</p>
+
+    <h2>🔧 LFRuntimeAttribute</h2>
+    <p>The core runtime attribute class managing values, events, and regeneration.</p>
+
+    <h3>Properties</h3>
+    <div class="code-block">
+      // Identity Properties
+      public string attributeName // Display name (read-only)
+      public string code // Short abbreviation (read-only)
+      public string enumName // Enum identifier (read-only)
+      public string description // Purpose description (read-only)
+      public LFBehaviorType behaviorType // Attribute classification (read-only)
+
+      // Value Properties (with public setters for inspector)
+      public float baseValue { get; set; } // Base value before modifiers
+      public float currentValue { get; set; } // Current value for Vitals
+      public float minValue // Minimum boundary (read-only)
+      public float maxValue // Maximum boundary (read-only)
+
+      // Regeneration Properties (with public setters)
+      public float regenerationRate { get; set; } // Recovery per second
+      public float regenerationDelay { get; set; } // Delay before regen starts
+      public bool canRegenerate // Enable recovery (read-only)
+
+      // Runtime State
+      public bool IsRegenerating // Currently regenerating (read-only)
+      public bool IsDirty // Value changed since last UI update
+      public float value // Calculated final value (cached, read-only)
+    </div>
+
+    <h3>Core Methods (UPDATED)</h3>
+    <div class="code-block">
+      // Value Modification (CRITICAL DISTINCTION)
+      void ModifyValue(float amount) // Gameplay changes - FIRES regeneration events
+      void SetValue(float value) // Admin/loading - NO regeneration events
+
+      // UI Optimization
+      void ClearDirtyFlag() // Clear dirty flag after UI update
+
+      // Regeneration System (External Coroutine Management)
+      bool RegenerateStep(float deltaTime) // Called by coroutine system
+      void SetRegenerationState(bool regenerating) // Set regen state
+
+      // Validation
+      void ValidateAndFixConfiguration() // Auto-fix invalid values
+    </div>
+
+    <h3>Value Access Methods</h3>
+    <div class="code-block">
+      // Get Current Values
+      float GetCurrentValue() // Display value (current for Vitals, value for others)
+      float GetMaxValue() // Maximum boundary for this attribute type
+      float GetFloatValue() // Exact floating-point value
+      int GetIntValue() // Rounded integer value
+      string GetDisplayValue() // Formatted string for UI display
+
+      // State Queries
+      bool IsAtMax() // At maximum value
+      bool IsAtMin() // At minimum value
+      bool IsEmpty() // Convenience method for IsAtMin()
+      bool IsFull() // Convenience method for IsAtMax()
+      float GetPercentage() // 0.0 to 1.0 percentage within range
+      float GetMissingValue() // Difference between current and maximum
+    </div>
+
+    <h3>Events</h3>
+    <div class="code-block">
+      // Value Change Events
+      System.Action OnValueChanged // Fired when value changes
+      System.Action OnMaxValueChanged // Fired when max value changes
+
+      // Boundary Events
+      System.Action OnReachedZero // Fired when hitting minimum
+      System.Action OnReachedMax // Fired when hitting maximum
+
+      // Regeneration Events (For Coroutine System)
+      System.Action&lt;bool&gt; OnRegenerationStateChanged // Started/stopped regen
+      System.Action&lt;LFRuntimeAttribute&gt; OnShouldStartRegeneration // Trigger regen
+      System.Action&lt;LFRuntimeAttribute&gt; OnShouldStopRegeneration // Stop regen
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Regeneration System:</strong>
+      Regeneration is handled automatically by the generated component using coroutines. Do NOT call Update() methods
+      manually - the system is event-driven and starts regeneration automatically when values decrease.
+    </div>
+
+    <h2>🏗️ Generated Container Class</h2>
+    <h3>Generated Structure</h3>
+    <div class="code-block">
+      // Example for "Character" prefix with Health and Strength attributes
+      public class CharacterAttributes : MonoBehaviour, IAttributeContainer
+      {
+      [Header("Vital Attributes")]
+      public LFRuntimeAttribute health;
+
+      [Header("Basic Attributes")]
+      public LFRuntimeAttribute strength;
+
+      // Cached collections for performance
+      private Dictionary&lt;string, LFRuntimeAttribute&gt; _attributeCache;
+      private List&lt;LFRuntimeAttribute&gt; _instanceCache;
+      private Dictionary&lt;CharacterAttributeEnum, LFRuntimeAttribute&gt; _enumCache;
+
+      // Regeneration management
+      private Dictionary&lt;string, Coroutine&gt; activeRegenerationCoroutines;
+      }
+    </div>
+
+    <h3>Generated Methods (UPDATED)</h3>
+    <div class="code-block">
+      // Cached Collection Access (Performance Optimized)
+      public Dictionary&lt;string, LFRuntimeAttribute&gt; GetAllAttributes()
+      public List&lt;LFRuntimeAttribute&gt; GetAllAttributeInstances()
+      public Dictionary&lt;CharacterAttributeEnum, LFRuntimeAttribute&gt; GetAllAttributesByEnum()
+
+      // Attribute Lookup with Fallbacks
+      public LFRuntimeAttribute GetAttribute(string attributeName)
+      public LFRuntimeAttribute GetAttributeByEnum&lt;T&gt;(T enumValue) where T : System.Enum
+      public LFRuntimeAttribute GetAttribute(LFRuntimeAttribute attributeReference)
+
+      // Value Modification
+      public bool ModifyAttribute(string attributeName, float amount)
+      public bool SetAttribute(string attributeName, float value)
+
+      // Unity Lifecycle (UPDATED - Coroutine System)
+      void Awake() // Validation and initialization
+      void Start() // Setup regeneration events and initial regen check
+      void OnValidate() // Sync inspector changes to runtime
+      void OnDestroy() // Cleanup events and stop coroutines
+    </div>
+
+    <h3>Access Pattern Performance</h3>
+    <div class="code-block">
+      // FASTEST: Direct field access
+      attributes.health.ModifyValue(-25f); // No dictionary lookup
+
+      // FAST: Enum-based access
+      var health = attributes.GetAttributeByEnum(CharacterAttributeEnum.Health);
+      health.ModifyValue(-25f); // Cached dictionary lookup
+
+      // MEDIUM: String-based access
+      attributes.ModifyAttribute("Health", -25f); // String lookup + fallbacks
+    </div>
+
+    <h3>Key Performance Rules (UPDATED)</h3>
+    <div class="success">
+      <strong>💡 Performance Rules:</strong>
+      <ul>
+        <li>Cache attribute references in Start() for frequently accessed attributes</li>
+        <li>Use event-driven UI updates instead of polling every frame</li>
+        <li>Leverage the IsDirty flag to avoid unnecessary UI updates</li>
+        <li>Regeneration is automatic - no manual calls needed</li>
+        <li>Use ModifyValue() for gameplay, SetValue() for admin operations</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="section section-divider" id="about">
+    <h1>👋 About LF Attribute Forge</h1>
+    <p>Thank you for taking the time to visit this section to learn more about the package and the developer behind it.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>🎯 What is LF Attribute Forge?</h2>
+    <p>LF Attribute Forge is a Unity editor-based wizard tool designed to eliminate the tedious boilerplate code that
+      comes with creating RPG and other game attribute systems. Instead of manually writing hundreds of lines of
+      repetitive code for health, mana, stats, and other game attributes, you can generate complete, production-ready
+      systems in minutes.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>The Problem</h4>
+        <p>Every RPG or stat-based game needs attributes like Health, Mana, Strength, etc. Implementing these manually
+          means:</p>
+        <ul>
+          <li>Writing repetitive getter/setter code</li>
+          <li>Creating UI binding systems</li>
+          <li>Implementing regeneration logic</li>
+          <li>Adding validation and events</li>
+          <li>Hours of boilerplate coding</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>The Solution</h4>
+        <p>LF Attribute Forge automates all of this:</p>
+        <ul>
+          <li>4-step wizard interface</li>
+          <li>Complete code generation</li>
+          <li>Built-in coroutine-based regeneration</li>
+          <li>Performance optimizations</li>
+          <li>Professional validation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>👤 Created by Living Failure</h2>
+    <p>Hi! I'm Living Failure, an indie game develope. I
+      handle everything from programming gameplay systems to designing and animating 2D and 3D assets.</p>
+
+    <h3>Why I Built This Tool</h3>
+    <p>After working on multiple RPG and strategy games, I found myself constantly recreating the same attribute
+      systems.
+      Every project needed health, mana, stats, and the associated UI systems. The code was always similar but never
+      quite
+      the same, so I couldn't just copy-paste between projects.</p>
+
+    <p>I realized that what the Unity community needed wasn't another asset store plugin with pre-built components, but
+      a
+      <strong>code generation wizard tool</strong> that could create custom attribute systems tailored to each project's
+      specific needs.
+    </p>
+
+    <h3>Design Philosophy</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>Generate, Don't Package</h4>
+        <p>Instead of giving you pre-built components, LF Attribute Forge generates clean, readable code that becomes
+          part
+          of your project. You own it, you can modify it, and you understand exactly how it works.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Performance First</h4>
+        <p>The generated code is optimized for performance with cached lookups, dirty checking, efficient
+          coroutine-based
+          regeneration, and zero runtime overhead from heavy frameworks.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Developer Experience</h4>
+        <p>The tool should be intuitive enough for beginners but powerful enough for experienced developers. Clear
+          validation, helpful error messages, and comprehensive documentation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎮 Free vs Pro Philosophy</h2>
+    <p>I believe that core game development tools should be accessible to everyone, which is why the free version of LF
+      Attribute Forge includes everything you need to build professional attribute systems.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>Free Version</h4>
+        <p>Contains all essential features:</p>
+        <ul>
+          <li>Complete attribute wizard</li>
+          <li>Full code generation with coroutine regeneration</li>
+          <li>UI binding system</li>
+          <li>Performance optimizations</li>
+          <li>Documentation and support</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>Pro Version</h4>
+        <p>Adds advanced features for complex projects:</p>
+        <ul>
+          <li>Everything in Free version</li>
+          <li>Atrribute Modifier System</li>
+          <li>Attribute Influence System</li>
+          <li>Conditional Modifiers</li>
+          <li>Better UI Binding system</li>
+          <li>Extensive demo scenes to implement all the above</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>The free version is not a "trial" or "demo" - it's a complete tool that many developers will never need to
+      upgrade
+      from. The Pro version exists for developers working on complex RPG systems who need advanced modifier mechanics.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>🤝 Community and Support</h2>
+
+    <h3>Get in Touch</h3>
+    <p>I love hearing from developers who use LF Attribute Forge! Whether you have questions, bug reports, feature
+      requests, or just want to share what you've built, don't hesitate to reach out.</p>
+
+    <div class="code-block">
+      Email: livingfailuregames@gmail.com
+    </div>
+
+    <h3>How You Can Help</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>Spread the Word</h4>
+        <ul>
+          <li>Leave reviews on the Asset Store</li>
+          <li>Share with fellow developers</li>
+          <li>Post about your projects using the tool</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>Improve the Tool</h4>
+        <ul>
+          <li>Report bugs and issues</li>
+          <li>Suggest new features</li>
+          <li>Share your use cases</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🙏 Acknowledgments</h2>
+    <p>Special thanks to the Unity community for feedback, testing, and support during development. This tool exists
+      because of developers like you who believe in sharing knowledge and helping each other create better games.</p>
+
+    <p>Thank you for using LF Attribute Forge, and happy game developing!</p>
+  </div>
+
+  <!-- Back to top button -->
+  <a href="#top" class="back-to-top">↑ Top</a>
+
+</body>
+
+</html>

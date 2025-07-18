@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Reference - LF Attribute Forge</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="quick-start.html">Quick Start</a></li>
+      <li><a href="wizard-guide.html">Wizard Guide</a></li>
+      <li><a href="runtime-usage.html">Runtime Usage</a></li>
+      <li><a href="ui-binding.html">UI Binding</a></li>
+      <li><a href="import-export.html">Import/Export</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="api-reference.html" class="active">API Reference</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / API Reference
+  </div>
+
+  <div class="section">
+    <h1>📚 API Reference</h1>
+    <p>Complete reference for all LF Attribute Forge classes and methods.</p>
+  </div>
+
+  <div class="section">
+    <h2>🔧 LFRuntimeAttribute</h2>
+    <p>The core runtime attribute class managing values, events, and regeneration.</p>
+
+    <h3>Properties</h3>
+    <div class="code-block">
+      // Identity Properties
+      public string attributeName // Display name (read-only)
+      public string code // Short abbreviation (read-only)
+      public string enumName // Enum identifier (read-only)
+      public string description // Purpose description (read-only)
+      public LFBehaviorType behaviorType // Attribute classification (read-only)
+
+      // Value Properties (with public setters for inspector)
+      public float baseValue { get; set; } // Base value before modifiers
+      public float currentValue { get; set; } // Current value for Vitals
+      public float minValue // Minimum boundary (read-only)
+      public float maxValue // Maximum boundary (read-only)
+
+      // Regeneration Properties (with public setters)
+      public float regenerationRate { get; set; } // Recovery per second
+      public float regenerationDelay { get; set; } // Delay before regen starts
+      public bool canRegenerate // Enable recovery (read-only)
+
+      // Runtime State
+      public bool IsRegenerating // Currently regenerating (read-only)
+      public bool IsDirty // Value changed since last UI update
+      public float value // Calculated final value (cached, read-only)
+    </div>
+
+    <h3>Key Methods</h3>
+    <div class="code-block">
+      // Value Modification (CRITICAL DISTINCTION)
+      void ModifyValue(float amount) // Gameplay changes - FIRES regeneration events
+      void SetValue(float value) // Admin/loading - NO regeneration events
+
+      // UI Optimization
+      void ClearDirtyFlag() // Clear dirty flag after UI update
+
+      // Regeneration System (External Coroutine Management)
+      bool RegenerateStep(float deltaTime) // Called by coroutine system
+      void SetRegenerationState(bool regenerating) // Set regen state
+
+      // Validation
+      void ValidateAndFixConfiguration() // Auto-fix invalid values
+    </div>
+
+    <h3>Value Access Methods</h3>
+    <div class="code-block">
+      // Get Current Values
+      float GetCurrentValue() // Display value (current for Vitals, value for others)
+      float GetMaxValue() // Maximum boundary for this attribute type
+      float GetFloatValue() // Exact floating-point value
+      int GetIntValue() // Rounded integer value
+      string GetDisplayValue() // Formatted string for UI display
+
+      // State Queries
+      bool IsAtMax() // At maximum value
+      bool IsAtMin() // At minimum value
+      bool IsEmpty() // Convenience method for IsAtMin()
+      bool IsFull() // Convenience method for IsAtMax()
+      float GetPercentage() // 0.0 to 1.0 percentage within range
+      float GetMissingValue() // Difference between current and maximum
+    </div>
+
+    <h3>Events</h3>
+    <div class="code-block">
+      // Value Change Events
+      System.Action OnValueChanged // Fired when value changes
+      System.Action OnMaxValueChanged // Fired when max value changes
+
+      // Boundary Events
+      System.Action OnReachedZero // Fired when hitting minimum
+      System.Action OnReachedMax // Fired when hitting maximum
+
+      // Regeneration Events (For Coroutine System)
+      System.Action&lt;bool&gt; OnRegenerationStateChanged // Started/stopped regen
+      System.Action&lt;LFRuntimeAttribute&gt; OnShouldStartRegeneration // Trigger regen
+      System.Action&lt;LFRuntimeAttribute&gt; OnShouldStopRegeneration // Stop regen
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Regeneration System:</strong>
+      Regeneration is handled automatically by the generated component using coroutines. Do NOT call Update() methods
+      manually - the system is event-driven and starts regeneration automatically when values decrease.
+    </div>
+    <div class="warning">
+      <strong>⚠️ Regeneration Flow:</strong>
+      LFRuntimeAttribute fires events (OnShouldStartRegeneration) → Generated container manages coroutines → Coroutine
+      calls
+      RegenerateStep() each frame.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🏗️ Generated Container Class</h2>
+    <p>Auto-generated MonoBehaviour implementing IAttributeContainer with coroutine-based regeneration.</p>
+
+    <h3>Generated Structure</h3>
+    <div class="code-block">
+      // Example for "Character" prefix with Health and Strength attributes
+      public class CharacterAttributes : MonoBehaviour, IAttributeContainer
+      {
+      [Header("Vital Attributes")]
+      public LFRuntimeAttribute health;
+
+      [Header("Basic Attributes")]
+      public LFRuntimeAttribute strength;
+
+      // Cached collections for performance
+      private Dictionary&lt;string, LFRuntimeAttribute&gt; _attributeCache;
+      private List&lt;LFRuntimeAttribute&gt; _instanceCache;
+      private Dictionary&lt;CharacterAttributeEnum, LFRuntimeAttribute&gt; _enumCache;
+
+      // Regeneration management
+      private Dictionary&lt;string, Coroutine&gt; activeRegenerationCoroutines;
+      }
+    </div>
+
+    <h3>Generated Methods</h3>
+    <div class="code-block">
+      // Cached Collection Access (Performance Optimized)
+      public Dictionary&lt;string, LFRuntimeAttribute&gt; GetAllAttributes()
+      public List&lt;LFRuntimeAttribute&gt; GetAllAttributeInstances()
+      public Dictionary&lt;CharacterAttributeEnum, LFRuntimeAttribute&gt; GetAllAttributesByEnum()
+
+      // Attribute Lookup with Fallbacks
+      public LFRuntimeAttribute GetAttribute(string attributeName)
+      public LFRuntimeAttribute GetAttributeByEnum&lt;T&gt;(T enumValue) where T : System.Enum
+      public LFRuntimeAttribute GetAttribute(LFRuntimeAttribute attributeReference)
+
+      // Value Modification
+      public bool ModifyAttribute(string attributeName, float amount)
+      public bool SetAttribute(string attributeName, float value)
+
+      // Unity Lifecycle (UPDATED - Coroutine System)
+      void Awake() // Validation and initialization
+      void Start() // Setup regeneration events and initial regen check
+      void OnValidate() // Sync inspector changes to runtime
+      void OnDestroy() // Cleanup events and stop coroutines
+    </div>
+
+    <h3>Access Pattern Performance</h3>
+    <div class="code-block">
+      // FASTEST: Direct field access
+      attributes.health.ModifyValue(-25f); // No dictionary lookup
+
+      // FAST: Enum-based access
+      var health = attributes.GetAttributeByEnum(CharacterAttributeEnum.Health);
+      health.ModifyValue(-25f); // Cached dictionary lookup
+
+      // MEDIUM: String-based access
+      attributes.ModifyAttribute("Health", -25f); // String lookup + fallbacks
+    </div>
+
+    <div class="success">
+      <strong>💡 Performance Tips:</strong>
+      <ul>
+        <li>Use direct field access for performance-critical code</li>
+        <li>Cache attribute references in Start() for frequently accessed attributes</li>
+        <li>Use enum-based access for type-safe dynamic access</li>
+        <li>String-based access is safest but slowest</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎯 Usage Examples</h2>
+
+    <h3>Basic Usage</h3>
+    <div class="code-block">
+      public class PlayerController : MonoBehaviour
+      {
+      private CharacterAttributes attributes;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+
+      // Subscribe to events
+      attributes.health.OnValueChanged += OnHealthChanged;
+      attributes.health.OnReachedZero += OnPlayerDeath;
+      }
+
+      void OnHealthChanged()
+      {
+      // Update UI, trigger effects, etc.
+      Debug.Log($"Health: {attributes.health.GetCurrentValue()}/{attributes.health.GetMaxValue()}");
+      }
+
+      void OnPlayerDeath()
+      {
+      Debug.Log("Player died!");
+      }
+      }
+    </div>
+
+    <h3>Damage System</h3>
+    <div class="code-block">
+      public class DamageReceiver : MonoBehaviour
+      {
+      private CharacterAttributes attributes;
+
+      void Start()
+      {
+      attributes = GetComponent&lt;CharacterAttributes&gt;();
+      }
+
+      public void TakeDamage(float amount)
+      {
+      // Use ModifyValue for gameplay changes - triggers regeneration
+      attributes.health.ModifyValue(-amount);
+
+      Debug.Log($"Took {amount} damage. Health: {attributes.health.GetCurrentValue()}");
+      }
+
+      public void Heal(float amount)
+      {
+      // Healing also uses ModifyValue
+      attributes.health.ModifyValue(amount);
+
+      Debug.Log($"Healed {amount}. Health: {attributes.health.GetCurrentValue()}");
+      }
+      }
+    </div>
+
+    <h3>Safe String-Based Access</h3>
+    <div class="code-block">
+      public bool TryModifyAttribute(string name, float amount)
+      {
+      if (attributes == null)
+      {
+      Debug.LogError("CharacterAttributes component missing!");
+      return false;
+      }
+
+      var attribute = attributes.GetAttribute(name);
+      if (attribute == null)
+      {
+      Debug.LogError($"Attribute '{name}' not found!");
+      return false;
+      }
+
+      float oldValue = attribute.GetCurrentValue();
+      attribute.ModifyValue(amount);
+      float newValue = attribute.GetCurrentValue();
+
+      Debug.Log($"{name}: {oldValue} → {newValue} (change: {amount})");
+      return true;
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚡ Performance Guidelines</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>🚀 Best Performance</h4>
+        <ul>
+          <li>Direct field access: <code>attributes.health.ModifyValue()</code></li>
+          <li>Cache attribute references</li>
+          <li>Use targeted UI updates</li>
+          <li>Event-driven UI updates only</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ Good Performance</h4>
+        <ul>
+          <li>Enum-based access: <code>GetAttributeByEnum()</code></li>
+          <li>Cached collection access</li>
+          <li>Batch UI operations</li>
+          <li>Rate-limited updates (0.1s intervals)</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4>⚠️ Avoid in Update()</h4>
+        <ul>
+          <li>String-based lookups every frame</li>
+          <li>UpdateAllUI() without rate limiting</li>
+          <li>Creating temporary strings</li>
+          <li>Allocating new objects</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="success">
+      <strong>💡 Performance Tips:</strong>
+      <ul>
+        <li>Use the fastest access method appropriate for your use case</li>
+        <li>Subscribe to events rather than polling in Update()</li>
+        <li>Cache frequently accessed references</li>
+        <li>Use targeted UI update methods for better performance</li>
+        <li>Profile with Unity Profiler to identify bottlenecks</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 Related Documentation</h2>
+    <ul>
+      <li><a href="runtime-usage.html">Runtime Usage Guide</a> - Practical examples and patterns</li>
+      <li><a href="ui-binding.html">UI Binding System</a> - Connecting attributes to UI elements</li>
+      <li><a href="troubleshooting.html">Troubleshooting</a> - Common issues and solutions</li>
+      <li><a href="wizard-guide.html">Wizard Guide</a> - Complete wizard step-by-step</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="troubleshooting.html">← Previous: Troubleshooting</a>
+    <div></div>
+  </div>
+</body>
+
+</html>
